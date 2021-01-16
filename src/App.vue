@@ -19,6 +19,32 @@
           <input type="checkbox" v-model="nightMode" id="nightMode" />
           Night Mode
         </label>
+
+        <label for="width">
+          Width:
+          <input
+            type="number"
+            v-model="width"
+            id="width"
+            min="10"
+            @input="createGrid"
+          />
+        </label>
+        <label for="height">
+          Height:
+          <input
+            type="number"
+            v-model="height"
+            id="height"
+            min="10"
+            @input="createGrid"
+          />
+        </label>
+
+        <label for="size">
+          Size:
+          <input type="number" v-model="cellSize" id="size" />
+        </label>
       </div>
       <div class="status">
         <span>Iteration: {{ iteration }}</span>
@@ -64,7 +90,7 @@ export default {
   name: 'App',
   data() {
     return {
-      width: 30,
+      width: 60,
       height: 30,
 
       updateInterval: 100,
@@ -75,8 +101,10 @@ export default {
       state: false,
       iteration: 0,
 
-      showNeighbors: true,
+      showNeighbors: false,
       nightMode: false,
+
+      cellSize: 16,
     }
   },
 
@@ -87,6 +115,7 @@ export default {
 
     cssVars() {
       return {
+        '--cell-size': this.cellSize + 'px',
         '--bg-page': this.theme.page,
         '--text-color': this.theme.text,
         '--cell-dead': this.theme.cellDead,
@@ -214,6 +243,10 @@ export default {
 
     .controls {
       margin-bottom: 4px;
+
+      input[type='number'] {
+        width: 60px;
+      }
     }
 
     button,
@@ -226,17 +259,14 @@ export default {
     padding: 8px;
 
     .row {
-      height: 18px;
+      height: calc(var(--cell-size) + 2px);
 
       .cell {
-        margin-bottom: 1px;
-        margin-right: 1px;
+        margin: 0px;
+        border: 1px solid var(--bg-page);
 
-        margin-top: 1px;
-        margin-left: 1px;
-
-        width: 16px;
-        height: 16px;
+        width: var(--cell-size);
+        height: var(--cell-size);
 
         display: inline-block;
 
